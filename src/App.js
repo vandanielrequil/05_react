@@ -20,10 +20,10 @@ function App() {
             rows="5"
             value={message}
             onChange={(e) => writeMsg(e.target.value)}
-            onKeyDown={(e) => { if (e.code === "Enter") { msgArrF(CompSendMsg(message, msgArrF)); writeMsg(""); } }}
+            onKeyDown={(e) => { if (e.code === "Enter") { msgArrF(CompSendMsg(message, msgArrF, msgArr)); writeMsg(""); } }}
           ></textarea>
           <button className="sendbut" type="button"
-            onClick={(e) => { msgArrF(CompSendMsg(message, msgArrF)); writeMsg(""); }}>
+            onClick={(e) => { msgArrF(CompSendMsg(message, msgArrF, msgArr)); writeMsg(""); }}>
             Отправить
           </button>
         </form>

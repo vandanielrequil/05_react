@@ -1,6 +1,7 @@
-const CompSendMsg = function CompSendMsg(message, msgArrF) {
+const CompSendMsg = function CompSendMsg(message, msgArrF, msgArr) {
 
   function sendAns() {
+
     const ansArr = [
       "Я выпотрошу тебя и всю твою семью",
       "Твоя душа принадлежит мне",
@@ -10,7 +11,7 @@ const CompSendMsg = function CompSendMsg(message, msgArrF) {
     let timer;
     function answerMsg() {
       let ansNum = parseInt(Math.random() * ansArr.length);
-      let ans = <div className="message message__answer">{ansArr[ansNum]}</div>;
+      let ans = <div key={msgArr.length + 1000} className="message message__answer">{ansArr[ansNum]}</div>;
       msgArrF((a) => [...a, ans]);
       return clearInterval(timer);
     }
@@ -18,8 +19,8 @@ const CompSendMsg = function CompSendMsg(message, msgArrF) {
   }
 
   if (!!message === true) {
-    console.log(message + ' ' + !!message);
-    let mess = <div className="message message__send">{message}</div>;
+
+    let mess = <div key={msgArr.length} className="message message__send">{message}</div>;
     msgArrF((a) => [...a, mess]);
     sendAns();
   }
