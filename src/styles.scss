@@ -9,7 +9,7 @@ $rounded: 2%;
 
 .messenger {
   width: 500px;
-  height: 700px;
+  height: 95vh;
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
@@ -54,5 +54,19 @@ $rounded: 2%;
   }
   .sendbut {
     align-self: flex-end;
+  }
+}
+.message {
+  margin: 1%;
+  &__send {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+  }
+  &__answer
+  {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
   }
 }

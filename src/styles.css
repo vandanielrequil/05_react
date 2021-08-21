@@ -5,7 +5,7 @@
 
 .messenger {
   width: 500px;
-  height: 700px;
+  height: 95vh;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -73,5 +73,35 @@
 .sendform .sendbut {
   -ms-flex-item-align: end;
       align-self: flex-end;
+}
+
+.message {
+  margin: 1%;
+}
+
+.message__send {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-pack: start;
+      -ms-flex-pack: start;
+          justify-content: flex-start;
+}
+
+.message__answer {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-pack: end;
+      -ms-flex-pack: end;
+          justify-content: flex-end;
 }
 /*# sourceMappingURL=styles.css.map */
