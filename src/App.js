@@ -5,7 +5,7 @@ import CompSendMsg from "./CompSendMsg";
 function App() {
 
   const [message, writeMsg] = useState("");
-  let [msgArr, msgArrF] = useState([]);
+  const [msgArr, msgArrF] = useState([]);
 
   return (
     <main>
@@ -20,8 +20,10 @@ function App() {
             rows="5"
             value={message}
             onChange={(e) => writeMsg(e.target.value)}
+            onKeyDown={(e) => { if (e.code === "Enter") { msgArrF(CompSendMsg(message, msgArrF)); writeMsg(""); } }}
           ></textarea>
-          <button className="sendbut" type="button" onClick={(e) => msgArrF = CompSendMsg(message,msgArrF)}>
+          <button className="sendbut" type="button"
+            onClick={(e) => { msgArrF(CompSendMsg(message, msgArrF)); writeMsg(""); }}>
             Отправить
           </button>
         </form>

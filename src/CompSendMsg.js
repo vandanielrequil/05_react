@@ -1,6 +1,6 @@
-const CompSendMsg = function CompSendMsg(message,msgArrF) {
+const CompSendMsg = function CompSendMsg(message, msgArrF) {
 
-    function sendAns() {
+  function sendAns() {
     const ansArr = [
       "Я выпотрошу тебя и всю твою семью",
       "Твоя душа принадлежит мне",
@@ -17,14 +17,12 @@ const CompSendMsg = function CompSendMsg(message,msgArrF) {
     timer = setInterval(() => answerMsg(), 1000);
   }
 
-  if (message) {
+  if (!!message === true) {
+    console.log(message + ' ' + !!message);
     let mess = <div className="message message__send">{message}</div>;
     msgArrF((a) => [...a, mess]);
-  } else {
-    return 0;
+    sendAns();
   }
-  //writeMsg("");
-  sendAns();
   return msgArrF;
 };
 
