@@ -4,8 +4,8 @@
 }
 
 .messenger {
-  width: 500px;
-  height: 95vh;
+  width: 400px;
+  height: 65vh;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -42,6 +42,8 @@
   border: 2px solid #313234;
   border-radius: 2%;
   z-index: 5;
+  overflow: auto;
+  overflow-x: hidden;
 }
 
 .sendform {
@@ -80,16 +82,7 @@
 }
 
 .message__send {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
-  -webkit-box-pack: start;
-      -ms-flex-pack: start;
-          justify-content: flex-start;
+  overflow: auto;
 }
 
 .message__answer {

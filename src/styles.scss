@@ -8,8 +8,8 @@ $rounded: 2%;
 }
 
 .messenger {
-  width: 500px;
-  height: 95vh;
+  width: 400px;
+  height: 65vh;
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
@@ -35,6 +35,8 @@ $rounded: 2%;
   border: 2px solid $black;
   border-radius: $rounded;
   z-index: 5;
+  overflow: auto;
+  overflow-x: hidden;
 }
 .sendform {
   padding: 2%;
@@ -59,12 +61,9 @@ $rounded: 2%;
 .message {
   margin: 1%;
   &__send {
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
+    overflow: auto;
   }
-  &__answer
-  {
+  &__answer {
     display: flex;
     flex-direction: row;
     justify-content: flex-end;
