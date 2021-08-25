@@ -35,8 +35,9 @@ $rounded: 2%;
   border: 2px solid $black;
   border-radius: $rounded;
   z-index: 5;
-  overflow: auto;
   overflow-x: hidden;
+  overflow-y: auto;
+  scroll-behavior: smooth;
 }
 .sendform {
   padding: 2%;
@@ -56,6 +57,9 @@ $rounded: 2%;
   }
   .sendbut {
     align-self: flex-end;
+    margin-top: 3%;
+    width: 35%;
+    height: 30%;
   }
 }
 .message {
