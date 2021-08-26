@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 
-const SendForm = (props) => {
+const SendForm = ({ props: { msg, msgFunc, msgArrFunc, msgArr, msgSentFunc } }) => {
 
     const useStyles = makeStyles(() => ({
         sendform: {
@@ -33,13 +33,14 @@ const SendForm = (props) => {
 
     const classes = useStyles();
 
-    function CompSendMsg(msg, msgArrFunc, msgArr, msgSentFunc) {
+    function CompSendMsg(msg, msgFunc, msgArrFunc, msgArr, msgSentFunc) {
         if (!!msg === true) {
 
             let mess = <div key={msgArr.length} className="msg msg__send">{msg}</div>;
             msgArrFunc((a) => [...a,
             { msg: mess, author: 'human' }
             ]);
+            msgFunc('');
             return msgSentFunc(true);
         }
     };
@@ -50,14 +51,15 @@ const SendForm = (props) => {
             id="txta1"
             cols="30"
             rows="5"
-            value={props.msg}
-            onChange={(e) => props.msgFunc(e.target.value)}
-            onKeyDown={(e) => { if (e.code === "Enter") { e.preventDefault(); CompSendMsg(props.msg, props.msgArrFunc, props.msgArr, props.msgSentFunc); } }}
+            value={msg}
+            onChange={(e) => msgFunc(e.target.value)}
+            onKeyDown={(e) => { if (e.code === "Enter") { e.preventDefault(); CompSendMsg(msg, msgFunc, msgArrFunc, msgArr, msgSentFunc); } }}
         ></textarea>
         <Button className={classes.button}
+
             variant="contained" color="primary"
             onClick={(e) => {
-                CompSendMsg(props.msg, props.msgArrFunc, props.msgArr, props.msgSentFunc);
+                CompSendMsg(msg, msgFunc, msgArrFunc, msgArr, msgSentFunc);
             }}>
             Отправить
         </Button>
@@ -65,10 +67,12 @@ const SendForm = (props) => {
 }
 
 SendForm.propTypes = {
-    msg: PropTypes.string.isRequired,
-    msgArrFunc: PropTypes.func.isRequired,
-    msgArr: PropTypes.array.isRequired,
-    msgSentFunc: PropTypes.func.isRequired
+    props: PropTypes.shape({
+        msg: PropTypes.string.isRequired,
+        msgArrFunc: PropTypes.func.isRequired,
+        msgArr: PropTypes.array.isRequired,
+        msgSentFunc: PropTypes.func.isRequired
+    })
 }
 
 export default SendForm;

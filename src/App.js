@@ -4,8 +4,6 @@ import { makeStyles } from '@material-ui/core/styles';
 /*Import Components*/
 import Chat from "./copm_Chat";
 import SendForm from "./copm_SendForm";
-import BotAnswer from "./copm_BotAnswer";
-
 
 function App() {
 
@@ -51,14 +49,15 @@ function App() {
   }));
   const classes = useStyles();
 
-  BotAnswer(msgFunc, msgArr, msgArrFunc, msgSent, msgSentFunc);
+
 
   return (
     <main>
+
       <div className={classes.messenger}>
         <div className={classes.bg}></div>
-        <Chat msgArr={msgArr} />
-        <SendForm msg={msg} msgFunc={msgFunc} msgArrFunc={msgArrFunc} msgArr={msgArr} msgSentFunc={msgSentFunc} />
+        <Chat props={{ msgFunc, msgArrFunc, msgSent, msgSentFunc, msgArr }} />
+        <SendForm props={{ msg, msgFunc, msgArrFunc, msgArr, msgSentFunc }} />
       </div>
     </main>
   );
