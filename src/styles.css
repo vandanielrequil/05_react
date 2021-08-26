@@ -81,15 +81,15 @@
   height: 30%;
 }
 
-.message {
+.msg {
   margin: 1%;
 }
 
-.message__send {
+.msg__send {
   overflow: auto;
 }
 
-.message__answer {
+.msg__answer {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
