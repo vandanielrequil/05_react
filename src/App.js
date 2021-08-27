@@ -1,66 +1,21 @@
-import React, { useState } from "react";
-import "./styles.css";
-import { makeStyles } from '@material-ui/core/styles';
-/*Import Components*/
-import Chat from "./copm_Chat";
-import SendForm from "./copm_SendForm";
+import React from "react";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import Conversation from "./Conversation";
+import Playground from "./Playground";
+import Home from "./Home";
+import AppBar from "./AppBar";
+import Profile from './Profile';
 
-function App() {
-
-  const msgSample = { msg: '', author: '' };
-  const [msg, msgFunc] = useState("");
-  const [msgArr, msgArrFunc] = useState([msgSample]);
-  const [msgSent, msgSentFunc] = useState(false);
-
-  const useStyles = makeStyles(() => ({
-    messenger: {
-      width: '400px',
-      height: '70vh',
-      display: 'flex',
-      flexDirection: 'column',
-      justifyContent: 'space-evenly',
-      alignItems: 'center',
-      backgroundColor: '#e3e3e3',
-      position: 'relative',
-      zIndex: '0',
-      border: '2px solid #313234',
-      '&>div:first-child': {
-        backgroundColor: '#60879e',
-        width: '100%',
-        height: '20%',
-        position: 'absolute',
-        zIndex: '0',
-        top: '0',
-      },
-    },
-    bg: {},
-    msg: {
-      margin: '1%'
-    },
-    send: {
-      overflow: 'auto',
-    },
-    answer: {
-      display: 'flex',
-      flexDirection: 'row',
-      justifyContent: 'flex-end',
-      color: 'red'
-    }
-  }));
-  const classes = useStyles();
-
-
-
-  return (
-    <main>
-
-      <div className={classes.messenger}>
-        <div className={classes.bg}></div>
-        <Chat props={{ msgFunc, msgArrFunc, msgSent, msgSentFunc, msgArr }} />
-        <SendForm props={{ msg, msgFunc, msgArrFunc, msgArr, msgSentFunc }} />
-      </div>
-    </main>
-  );
+const App = () => {
+    return <Router>
+        <AppBar />
+        <Switch>
+            <Route path="/conversation"><Conversation /></Route>
+            <Route path="/playgroud"><Playground /></Route>
+            <Route path="/profile"><Profile /></Route>
+            <Route path="/"><Home /></Route>
+        </Switch>
+    </Router>
 }
 
 export default App;
