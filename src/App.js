@@ -11,7 +11,7 @@ const App = () => {
         <AppBar />
         <Switch>
             <Route path="/conversation"><Conversation /></Route>
-            <Route path="/playgroud"><Playground /></Route>
+            <Route path="/playgroud"><Playground testProp={1} /></Route>
             <Route path="/profile"><Profile /></Route>
             <Route path="/"><Home /></Route>
         </Switch>
