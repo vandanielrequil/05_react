@@ -9,8 +9,12 @@ const Playground = (props) => {
     //console.log(contexValues);
     //console.log('COMP props are ', props);
 
+    const [time, setTime] = useState(new Date().toLocaleTimeString());
+    function timeOn() { setTime(new Date().toLocaleTimeString()) };
+    setInterval(timeOn, 1000);
+
     return <div>
-        This is Playground, and it {new Date().toLocaleTimeString()}
+        This is Playground, and it's {time}
     </div>
 }
 
