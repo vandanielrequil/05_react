@@ -11,8 +11,8 @@ import SendForm from "./copm_SendForm";
 function Conversation() {
 
   const [msg, msgFunc] = useState("");
-  //const [msgArr, msgArrFunc] = useState([msgSample]);
   const [msgSent, msgSentFunc] = useState(false);
+
   const { msgArray } = useSelector(state => state.conversation);
 
   const useStyles = makeStyles(() => ({
@@ -55,9 +55,9 @@ function Conversation() {
 
   return (
     <main>
-
       <div className={classes.conversation}>
         <div className={classes.bg}></div>
+         {/* I really dont like and idea of spamming list of props like 'dummy=dummy', so I've done it this way */}
         <Chat props={{ msgFunc, msgSent, msgSentFunc, msgArray }} />
         <SendForm props={{ msg, msgFunc, msgArray, msgSentFunc }} />
       </div>

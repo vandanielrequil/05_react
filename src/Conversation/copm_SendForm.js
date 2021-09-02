@@ -6,7 +6,7 @@ import { useDispatch } from 'react-redux';
 import { incWithMessage, addMsg } from '../Conversation/conversationSlice'
 
 
-
+// This is area of send form - button, input etc
 const SendForm = ({ props: { msg, msgFunc, msgArray, msgSentFunc } }) => {
 
     const useStyles = makeStyles(() => ({
@@ -41,9 +41,7 @@ const SendForm = ({ props: { msg, msgFunc, msgArray, msgSentFunc } }) => {
     function CompSendMsg(msg, msgFunc, msgArray, msgSentFunc) {
         if (!!msg === true) {
             dispatch(addMsg({ msg: msg, author: 'human', type: 'send' }));
-            // msgArrFunc((a) => [...a,
-            //     { msg: mess, author: 'human' }
-            //     ]);
+            // msgArrFunc((a) => [...a, { msg: mess, author: 'human' } ]);
             msgFunc('');
 
             dispatch(incWithMessage(msg));
@@ -51,6 +49,13 @@ const SendForm = ({ props: { msg, msgFunc, msgArray, msgSentFunc } }) => {
             return msgSentFunc(true);
         }
     };
+
+    function sendMsgByEnter(e) {
+        if (e.code === "Enter") {
+            e.preventDefault(); 
+            CompSendMsg(msg, msgFunc, msgArray, msgSentFunc);
+        }
+    }
 
     return <form className={classes.sendform} action="">
         <textarea
@@ -60,10 +65,9 @@ const SendForm = ({ props: { msg, msgFunc, msgArray, msgSentFunc } }) => {
             rows="5"
             value={msg}
             onChange={(e) => msgFunc(e.target.value)}
-            onKeyDown={(e) => { if (e.code === "Enter") { e.preventDefault(); CompSendMsg(msg, msgFunc, msgArray, msgSentFunc); } }}
+            onKeyDown={(e) => { sendMsgByEnter(e) }}
         ></textarea>
         <Button className={classes.button}
-
             variant="contained" color="primary"
             onClick={(e) => {
                 CompSendMsg(msg, msgFunc, msgArray, msgSentFunc);

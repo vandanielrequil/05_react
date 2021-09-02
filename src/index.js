@@ -9,7 +9,6 @@ import store from "./store";
 
 export const MyContext = React.createContext({ appVersion: '0.2' });
 
-function tick() {
   ReactDOM.render(
     <React.StrictMode>
       <MyContext.Provider value={{ appVersion: '0.9' }}>
@@ -20,7 +19,3 @@ function tick() {
     </React.StrictMode>,
     document.getElementById('root')
   )
-}
-
-setInterval(tick(), 1000);
-
