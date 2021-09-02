@@ -1,16 +1,19 @@
 import React, { useState } from "react";
 import "./styles.css";
 import { makeStyles } from '@material-ui/core/styles';
+import { useSelector } from 'react-redux';
 /*Import Components*/
 import Chat from "./copm_Chat";
 import SendForm from "./copm_SendForm";
 
+
+
 function Conversation() {
 
-  const msgSample = { msg: '', author: '' };
   const [msg, msgFunc] = useState("");
-  const [msgArr, msgArrFunc] = useState([msgSample]);
+  //const [msgArr, msgArrFunc] = useState([msgSample]);
   const [msgSent, msgSentFunc] = useState(false);
+  const { msgArray } = useSelector(state => state.conversation);
 
   const useStyles = makeStyles(() => ({
     conversation: {
@@ -55,8 +58,8 @@ function Conversation() {
 
       <div className={classes.conversation}>
         <div className={classes.bg}></div>
-        <Chat props={{ msgFunc, msgArrFunc, msgSent, msgSentFunc, msgArr }} />
-        <SendForm props={{ msg, msgFunc, msgArrFunc, msgArr, msgSentFunc }} />
+        <Chat props={{ msgFunc, msgSent, msgSentFunc, msgArray }} />
+        <SendForm props={{ msg, msgFunc, msgArray, msgSentFunc }} />
       </div>
     </main>
   );

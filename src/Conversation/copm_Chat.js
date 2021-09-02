@@ -1,8 +1,11 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import PropTypes from "prop-types";
 import { makeStyles } from '@material-ui/core/styles';
+import { useDispatch } from 'react-redux';
+import { addMsg } from '../Conversation/conversationSlice'
 
-const Chat = ({ props: { msgFunc, msgArrFunc, msgSent, msgSentFunc, msgArr } }) => {
+
+const Chat = ({ props: { msgFunc, msgSent, msgSentFunc, msgArray } }) => {
 
     const useStyles = makeStyles(() => ({
         chat: {
@@ -18,7 +21,10 @@ const Chat = ({ props: { msgFunc, msgArrFunc, msgSent, msgSentFunc, msgArr } }) 
             scrollBehavior: 'smooth'
         },
     }));
+    const classes = useStyles();
+    const dispatch = useDispatch();
 
+    //Bot answers
     useEffect(() => {
         (function sendAns() {
             if (msgSent) {
@@ -33,28 +39,34 @@ const Chat = ({ props: { msgFunc, msgArrFunc, msgSent, msgSentFunc, msgArr } }) 
                 let timer;
                 function answerMsg() {
                     let ansNum = parseInt(Math.random() * ansArr.length);
-                    let ans = <div key={msgArr.length + 1000} className="msg msg__answer">{ansArr[ansNum]}</div>;
-                    msgArrFunc((a) => [...a,
-                    { msg: ans, author: 'bot' }
-                    ]);
+                    dispatch(addMsg({ msg: ansArr[ansNum], author: 'bot', type: 'answer' }));
                     return clearInterval(timer);
                 }
                 timer = setInterval(() => answerMsg(), 1000);
                 msgSentFunc(false);
             }
         })();
-    }, [msgFunc, msgArrFunc, msgSent, msgSentFunc, msgArr.length, msgArr]);
+    }, [msgFunc, msgSent, msgSentFunc, msgArray.length, msgArray, dispatch]);
 
-    const classes = useStyles();
 
-    return <div className={classes.chat}>{msgArr.map(e => e.msg)}</div>
+
+    let ans = msgArray.slice(1).map((e, i) => {
+        let classChoose = 'msg msg__' + e.type;
+        return <div key={1000 + i} className={classChoose}>{e.msg}</div>
+    });
+
+    const chatElem = useRef(null);
+    console.log(chatElem.current);
+
+
+    return <div ref={chatElem} className={classes.chat}>{ans}</div>
 }
 
 Chat.propTypes = {
     props:
         PropTypes.shape({
             msgFunc: PropTypes.func.isRequired,
-            msgArrFunc: PropTypes.func.isRequired,
+            msgArray: PropTypes.array.isRequired,
             msgSent: PropTypes.bool.isRequired,
             msgSentFunc: PropTypes.func.isRequired
         })
