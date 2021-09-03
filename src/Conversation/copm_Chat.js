@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import PropTypes from "prop-types";
 import { makeStyles } from '@material-ui/core/styles';
-import { useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { addMsg } from '../Conversation/conversationSlice'
 
 // This is the area of chat - where messages appear
@@ -22,10 +22,13 @@ const Chat = ({ props: { msgFunc, msgSent, msgSentFunc, msgArray } }) => {
         },
         answer: {
             display: 'flex',
-            flexDirection: 'row',
-            justifyContent: 'flex-end'
+            flexDirection: 'column',
+            alignItems: 'flex-end'
         },
         send: {
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'flex-start'
         }
     }));
     const classes = useStyles();
@@ -54,19 +57,27 @@ const Chat = ({ props: { msgFunc, msgSent, msgSentFunc, msgArray } }) => {
         })();
     }, [msgFunc, msgSent, msgSentFunc, msgArray.length, msgArray, dispatch]);
 
-    //add left or right style to messages 
+    //adding left or right style to messages and nickname
+    const { username, botname } = useSelector(state => state.profile);
     let ans = msgArray.slice(1).map((e, i) => {
-        let classChoose; 
-        e.type==='answer' ? classChoose = classes.answer : classChoose = classes.send;
-        return <div key={1000 + i} className={classChoose}>{e.msg}</div>
+        let classChoose = (e.type === 'answer') ? classes.answer : classes.send;
+        let nickname;
+        if (e.type === 'answer') {
+            nickname = <span role="img" aria-label="sheep">🤖<i>{botname}</i></span>
+        }
+        else {
+            nickname = <span role="img" aria-label="sheep">👦<i>{username}</i></span>
+        };
+        return <div key={1000 + i} className={classChoose}>{nickname} - {e.msg}</div>
+    });
+    //
+    //
+    //auto scroll down
+    const chatElem = useRef(<></>);
+    useEffect(e => {
+        chatElem.current.scrollTop = chatElem.current.scrollHeight;
     });
 
-    //auto scroll
-    const chatElem = useRef(<></>);
-    useEffect(e=>{
-        chatElem.current.scrollTop = chatElem.current.scrollHeight;
-    },);
-    
     return <div ref={chatElem} className={classes.chat}>{ans}</div>
 }
 
