@@ -5,9 +5,12 @@ export const theme = createTheme({
     palette: {
         primary: {
             main: blueGrey[500],
+            light: blueGrey[100],
         },
         secondary: {
-            main: blueGrey[100],
+            main: '#fafaff', //ghostWhite
+            light: '#eeedf0' //
         },
     },
 });
+
