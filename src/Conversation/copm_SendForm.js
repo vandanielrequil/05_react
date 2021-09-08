@@ -2,13 +2,14 @@ import React from "react";
 import PropTypes from "prop-types";
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
-import { useDispatch } from 'react-redux';
-import { incWithMessage, addMsg } from '../Conversation/conversationSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { chatAddMsg } from '../Conversation/conversationSlice';
 import TextField from '@material-ui/core/TextField';
+import moment from 'moment';
 
 
 // This is area of send form - button, input etc
-const SendForm = ({ props: { msg, msgFunc, msgArray, msgSentFunc } }) => {
+const SendForm = ({ props: { msg, msgFunc } }) => {
 
     const useStyles = makeStyles(() => ({
         sendform: {
@@ -33,38 +34,34 @@ const SendForm = ({ props: { msg, msgFunc, msgArray, msgSentFunc } }) => {
             height: '20%'
         },
     }));
-
     const classes = useStyles();
     const dispatch = useDispatch();
+    const { chats, users } = useSelector((state) => state.conversation);
 
-    function CompSendMsg(msg, msgFunc, msgArray, msgSentFunc) {
+    //Send message
+    function CompSendMsg(msg, msgFunc) {
         if (!!msg === true) {
-            dispatch(addMsg({ msg: msg, author: 'human', type: 'send' }));
-            // msgArrFunc((a) => [...a, { msg: mess, author: 'human' } ]);
+            dispatch(chatAddMsg({ id: 0, msg: msg, authorId: 1, time: `${moment().format('H:mm:ss')}` }));
             msgFunc('');
-
-            dispatch(incWithMessage(msg));
-
-            return msgSentFunc(true);
+            return true;
         }
     };
 
+    //Send message by enter
     function sendMsgByEnter(e) {
         if (e.code === "Enter") {
             e.preventDefault();
-            CompSendMsg(msg, msgFunc, msgArray, msgSentFunc);
+            CompSendMsg(msg, msgFunc);
         }
     }
 
     return <form className={classes.sendform} action="">
         <TextField
             variant="outlined"
-            multiline='true'
-            maxRows='4'
+            multiline
+            minRows={4}
             className={classes.sendtext}
             id="txta1"
-            cols="30"
-            rows="5"
             value={msg}
             onChange={(e) => msgFunc(e.target.value)}
             onKeyDown={(e) => { sendMsgByEnter(e) }}
@@ -72,7 +69,7 @@ const SendForm = ({ props: { msg, msgFunc, msgArray, msgSentFunc } }) => {
         <Button className={classes.button}
             variant="contained" color="primary"
             onClick={(e) => {
-                CompSendMsg(msg, msgFunc, msgArray, msgSentFunc);
+                CompSendMsg(msg, msgFunc);
             }}>
             Отправить
         </Button>
@@ -82,7 +79,6 @@ const SendForm = ({ props: { msg, msgFunc, msgArray, msgSentFunc } }) => {
 SendForm.propTypes = {
     props: PropTypes.shape({
         msg: PropTypes.string.isRequired,
-        msgArray: PropTypes.array.isRequired,
         msgSentFunc: PropTypes.func.isRequired
     })
 }

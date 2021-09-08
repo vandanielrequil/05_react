@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import "./styles.css";
 import { makeStyles } from '@material-ui/core/styles';
-import { useSelector } from 'react-redux';
 import Chat from "./copm_Chat";
 import SendForm from "./copm_SendForm";
 import msbg from "./msbg.jpg";
@@ -10,7 +9,6 @@ function Conversation() {
 
   const [msg, msgFunc] = useState("");
   const [msgSent, msgSentFunc] = useState(false);
-  const { msgArray } = useSelector(state => state.conversation);
 
   ;
 
@@ -70,8 +68,8 @@ function Conversation() {
       <div className={classes.conversation}>
         {/* I really dont like and idea of spamming list of props like 'dummy=dummy', so I've done it this way */}
         <div className={classes.chatWrapper}>
-          <Chat props={{ msgFunc, msgSent, msgSentFunc, msgArray }} />
-          <SendForm props={{ msg, msgFunc, msgArray, msgSentFunc }} />
+          <Chat props={{ msgFunc, msgSent, msgSentFunc }} />
+          <SendForm props={{ msg, msgFunc, msgSentFunc }} />
         </div>
       </div>
     </main>
