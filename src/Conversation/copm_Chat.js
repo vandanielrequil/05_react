@@ -2,33 +2,42 @@ import React, { useEffect, useRef } from "react";
 import PropTypes from "prop-types";
 import { makeStyles } from '@material-ui/core/styles';
 import { useSelector, useDispatch } from 'react-redux';
-import { addMsg } from '../Conversation/conversationSlice'
+import { addMsg } from '../Conversation/conversationSlice';
 
 // This is the area of chat - where messages appear
 const Chat = ({ props: { msgFunc, msgSent, msgSentFunc, msgArray } }) => {
 
-    const useStyles = makeStyles(() => ({
+    const useStyles = makeStyles((theme) => ({
         chat: {
             padding: '2%',
-            width: '90%',
-            height: '70%',
-            background: '#fafafa',
-            border: '2px solid #313234',
-            borderRadius: '2%',
+            margin: '0 0 3% 0',
+            width: '100%',
+            height: '65%',
+            background: 'rgba(250, 250, 250, .35)',
             zIndex: '5',
             overflowX: 'hidden',
             overflowY: 'auto',
-            scrollBehavior: 'smooth'
+            scrollBehavior: 'smooth',
+            display: 'flex',
+            flexDirection: 'column',
         },
         answer: {
+            alignSelf: 'flex-end',
             display: 'flex',
             flexDirection: 'column',
-            alignItems: 'flex-end'
+            alignItems: 'flex-end',
+            padding: '5px 20px',
+            backgroundColor: theme.palette.primary.light,
+            borderRadius: '5px 5px 5px 5px'
         },
         send: {
+            alignSelf: 'flex-start',
             display: 'flex',
             flexDirection: 'column',
-            alignItems: 'flex-start'
+            alignItems: 'flex-start',
+            padding: '5px 20px',
+            backgroundColor: theme.palette.primary.light,
+            borderRadius: '5px 5px 5px 5px'
         }
     }));
     const classes = useStyles();

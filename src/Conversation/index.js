@@ -2,40 +2,50 @@ import React, { useState } from "react";
 import "./styles.css";
 import { makeStyles } from '@material-ui/core/styles';
 import { useSelector } from 'react-redux';
-/*Import Components*/
 import Chat from "./copm_Chat";
 import SendForm from "./copm_SendForm";
-
-
+import msbg from "./msbg.jpg";
 
 function Conversation() {
 
   const [msg, msgFunc] = useState("");
   const [msgSent, msgSentFunc] = useState(false);
-
   const { msgArray } = useSelector(state => state.conversation);
 
-  const useStyles = makeStyles(() => ({
+  ;
+
+  const useStyles = makeStyles((theme) => ({
+    topBar: {
+      backgroundColor: theme.palette.primary.main,
+      width: '100%',
+      height: '60px',
+      boxShadow: 'inset 2px 2px 7px -1px #000000'
+    },
     conversation: {
-      margin: '0 auto',
-      width: '400px',
-      height: '70vh',
-      display: 'flex',
-      flexDirection: 'column',
-      justifyContent: 'space-evenly',
-      alignItems: 'center',
-      backgroundColor: '#e3e3e3',
-      position: 'relative',
-      zIndex: '0',
-      border: '2px solid #313234',
-      '&>div:first-child': {
-        backgroundColor: '#60879e',
-        width: '100%',
-        height: '20%',
-        position: 'absolute',
-        zIndex: '0',
-        top: '0',
-      },
+      marginLeft: '325px',
+      backgroundImage: `url(${msbg})`,
+      backgroundSize: 'cover',
+      width: 'calc(100vw - 325px)',
+      height: 'calc(100vh - 60px)',
+      // display: 'flex',
+      // flexDirection: 'column',
+      // justifyContent: 'space-evenly',
+      // alignItems: 'center',
+      display: 'grid',
+      gridTemplateColumns: '1fr 10fr 10fr 10fr',
+      gridTemplateRows: '1fr 20fr 1fr',
+      backgroundColor: theme.palette.primary.light,
+
+    },
+    chatWrapper: {
+      gridColumn: '2 / 5',
+      gridRow: '2 / 4',
+      width: '80%',
+      height: '100%',
+      // display: 'flex',
+      // flexDirection: 'column',
+      // justifyContent: 'space-between'
+
     },
     bg: {},
     msg: {
@@ -55,11 +65,14 @@ function Conversation() {
 
   return (
     <main>
+
+      <div className={classes.topBar}></div>
       <div className={classes.conversation}>
-        <div className={classes.bg}></div>
-         {/* I really dont like and idea of spamming list of props like 'dummy=dummy', so I've done it this way */}
-        <Chat props={{ msgFunc, msgSent, msgSentFunc, msgArray }} />
-        <SendForm props={{ msg, msgFunc, msgArray, msgSentFunc }} />
+        {/* I really dont like and idea of spamming list of props like 'dummy=dummy', so I've done it this way */}
+        <div className={classes.chatWrapper}>
+          <Chat props={{ msgFunc, msgSent, msgSentFunc, msgArray }} />
+          <SendForm props={{ msg, msgFunc, msgArray, msgSentFunc }} />
+        </div>
       </div>
     </main>
   );
