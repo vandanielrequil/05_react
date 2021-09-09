@@ -12,10 +12,11 @@ const App = () => {
     return <Router>
         <LeftContainer />
         <Switch>
+            <Route path="/"><Conversation /></Route>
             <Route path="/conversation"><Conversation /></Route>
             <Route path="/playgroud"><Playground /></Route>
             <Route path="/profile"><Profile /></Route>
-            <Route path="/"><Home /></Route>
+            {/* <Route path="/"><Home /></Route> */}
         </Switch>
     </Router>
 }

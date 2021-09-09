@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { alpha, makeStyles } from '@material-ui/core/styles';
 import { Typography } from '@material-ui/core';
 import AppBar from '@material-ui/core/AppBar';
@@ -8,6 +8,8 @@ import InputBase from '@material-ui/core/InputBase';
 import MenuIcon from '@material-ui/icons/Menu';
 import SearchIcon from '@material-ui/icons/Search';
 import Avatar from '@material-ui/core/Avatar';
+import { useDispatch, useSelector } from 'react-redux';
+import { chatCurrrentSet } from '../Conversation/conversationSlice'
 
 const useStyles = makeStyles((theme) => ({
     wrapper: {
@@ -21,6 +23,7 @@ const useStyles = makeStyles((theme) => ({
         width: '100%'
     },
     navChat: {
+        margin: '1px 0',
         display: 'flex',
         justifyContent: 'space-between',
         padding: '10px',
@@ -71,17 +74,36 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const LeftContainer = () => {
-
+    const dispatch = useDispatch();
     const classes = useStyles();
-    const [anchorEl, setAnchorEl] = React.useState(null);
-    const isMenuOpen = Boolean(anchorEl);
-    const handleProfileMenuOpen = (event) => {
-        setAnchorEl(event.currentTarget);
+    const { currentChat, users, chats } = useSelector((store) => store.conversation);
+
+
+    function setCurrentChat(e) {
+        dispatch(chatCurrrentSet(parseInt(e.currentTarget.id)));
     };
-    const menuId = 'primary-search-account-menu';
+
+    function renderChat() {
+        const chatList = chats.map(e => {
+            const { name, avatar } = users.find(el => parseInt(el.id) === parseInt(e.chatBuddyId));
+            const arrLngt = e.msgArray.length;
+            const { msg, time } = e.msgArray[arrLngt - 1];
+            return <>
+                <div key={e.id} id={e.id} className={classes.navChat} onClick={(e) => { setCurrentChat(e); }}>
+                    <Avatar alt="avatar" src={avatar} />
+                    <div className={classes.navChatColumn}><div>{name}</div><div>{msg}</div></div>
+                    <div><Typography variant='subtitle2'>{time}</Typography></div>
+                </div>
+            </>
+        }
+        );
+        return chatList;
+    };
+
+    const chatArray = renderChat();
 
     return (
-        <div className={classes.wrapper} >
+        <div className={classes.wrapper}>
             <AppBar className={classes.AppBar} position="static">
                 <Toolbar variant="regular">
                     <IconButton
@@ -108,28 +130,7 @@ const LeftContainer = () => {
                     </div>
                 </Toolbar>
             </AppBar>
-            <div className={classes.navChat}>
-                <Avatar alt="Cindy Baker" src="http://myanimeshelf.com//upload/dynamic/2011-11/07/MassEffect2_2011-01-31_23-05-54-84.bmp2.jpg" />
-                <div className={classes.navChatColumn}><div>sadfdsf</div><div>derfgdfgfg</div></div>
-                <div><Typography
-                    //    variant='h1'
-                    //variant= 'h2'
-                    //variant= 'h3'
-                    //variant= 'h4'
-                    //variant= 'h5'
-                    //variant= 'h6'
-                    //variant= 'subtitle1'
-                    variant='subtitle2'
-                //variant= 'body1'
-                //variant= 'body2'
-                //variant= 'caption'
-                //variant= 'button'
-                //variant= 'overline'
-                //variant= 'srOnly'
-                //variant= 'inherit'
-
-                >sadfdsf</Typography></div>
-            </div>
+            {chatArray}
         </div >
     );
 }

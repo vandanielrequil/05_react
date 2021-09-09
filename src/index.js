@@ -13,10 +13,8 @@ ReactDOM.render(
   <React.StrictMode>
     <MyContext.Provider value={{ appVersion: '0.9' }}>
       <ThemeProvider theme={theme}>
-        <React.Fragment>
-          <CssBaseline />
-          <Provider store={store}><App /></Provider>
-        </React.Fragment>
+        <CssBaseline />
+        <Provider store={store}><App /></Provider>
       </ThemeProvider>
     </MyContext.Provider>
   </React.StrictMode>,

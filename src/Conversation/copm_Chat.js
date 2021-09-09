@@ -4,9 +4,10 @@ import { makeStyles } from '@material-ui/core/styles';
 import { useSelector, useDispatch } from 'react-redux';
 import { chatAddMsg } from '../Conversation/conversationSlice';
 import moment from 'moment';
+import Avatar from '@material-ui/core/Avatar';
 
 // This is the area of chat - where messages appear
-const Chat = ({ props: { msgFunc, msgSent, msgSentFunc } }) => {
+const Chat = ({ props: { msgFunc } }) => {
 
     const useStyles = makeStyles((theme) => ({
         chat: {
@@ -22,8 +23,16 @@ const Chat = ({ props: { msgFunc, msgSent, msgSentFunc } }) => {
             display: 'flex',
             flexDirection: 'column',
         },
+        wrapeprAnswer: {
+            display: 'flex',
+            justifyContent: 'flex-end'
+        },
+        wrapeprSend: {
+            display: 'flex',
+            justifyContent: 'flex-start'
+        },
         answer: {
-            margin: '2px',
+            margin: '3px 5px',
             alignSelf: 'flex-end',
             display: 'flex',
             flexDirection: 'column',
@@ -33,7 +42,7 @@ const Chat = ({ props: { msgFunc, msgSent, msgSentFunc } }) => {
             borderRadius: '5px 5px 5px 5px'
         },
         send: {
-            margin: '2px',
+            margin: '3px 5px',
             alignSelf: 'flex-start',
             display: 'flex',
             flexDirection: 'column',
@@ -45,42 +54,60 @@ const Chat = ({ props: { msgFunc, msgSent, msgSentFunc } }) => {
     }));
     const classes = useStyles();
     const dispatch = useDispatch();
-    const { users, chats } = useSelector(state => state.conversation);
+    const { users, chats, currentChat } = useSelector(state => state.conversation);
 
     //Bot answers
     useEffect(() => {
         (function sendAns() {
-            if (chats[chats.length - 1].authorId === 1) {
+            const curChatEl = chats.find(e => e.id === currentChat.id);
+            const msgArray = chats.find(e => e.id === currentChat.id).msgArray;
+            if (msgArray[msgArray.length - 1].read === false) {
                 msgFunc('');
                 const ansArr = [
-                    "Я выпотрошу тебя и всю твою семью",
-                    "Твоя душа принадлежит мне",
-                    "И не надейся на быструю смерть",
-                    "Да начнётся истребление",
+                    "Ведите, капитан.",
+                    "Сейчас не время!",
+                    "Странно.",
+                    "Так уже лучше.",
+                    " Э...эй? Кто-нибудь может мне помочь, пожалуйста?",
+                    "Ладно уж, храни свои секреты)))",
                 ];
                 let timer;
                 function answerMsg() {
                     let ansNum = parseInt(Math.random() * ansArr.length);
-                    dispatch(chatAddMsg({ id: 0, msg: ansArr[ansNum], authorId: 2, time: `${moment().format('H:mm:ss')}` }));
+                    dispatch(chatAddMsg({
+                        chatId: currentChat.id,
+                        msg: { authorId: curChatEl.chatBuddyId, msg: ansArr[ansNum], read: true, time: `${moment().format('H:mm:ss')}` },
+                    }
+                    ));
                     return clearInterval(timer);
                 }
                 timer = setInterval(() => answerMsg(), 1000);
-                msgSentFunc(false);
             }
         })();
-    }, [msgFunc, msgSent, msgSentFunc, dispatch, chats]);
+    }, [msgFunc, dispatch, chats, currentChat]);
 
     //adding left or right style to messages and nickname
-    let ans = chats.slice(1).map((e, i) => {
-        let classChoose = (e.authorId === 1) ? classes.send : classes.answer;
-        let nickname;
+
+    const curChat = chats.find(e => e.id === currentChat.id);
+    let ans = curChat.msgArray.map((e, i) => {
+        let classWrapper, classChoose, nickname, avatarUrl;
         if (e.authorId !== 1) {
-            nickname = <span role="img" aria-label="sheep">🤖<i>Bot</i></span>
+            let { name, avatar } = users.find(e => e.id === curChat.chatBuddyId);
+            avatarUrl = avatar;
+            nickname = name;
+            classChoose = classes.answer;
+            classWrapper = classes.wrapeprAnswer;
         }
         else {
-            nickname = <span role="img" aria-label="sheep">👦<i>username</i></span>
+            let { name, avatar } = users.find(e => e.id === 1);
+            avatarUrl = avatar;
+            nickname = name;
+            classChoose = classes.send;
+            classWrapper = classes.wrapeprSend;
         };
-        return <div key={1000 + i} className={classChoose}>{nickname} - {e.msg}</div>
+        return <div className={classWrapper}><Avatar src={avatarUrl} alt="chat buddy photo" />
+            <div key={1000 + i} className={classChoose}><i>{nickname}</i> {e.msg}</div>
+        </div>
     });
 
     //auto scroll down
@@ -96,9 +123,7 @@ const Chat = ({ props: { msgFunc, msgSent, msgSentFunc } }) => {
 Chat.propTypes = {
     props:
         PropTypes.shape({
-            msgFunc: PropTypes.func.isRequired,
-            msgSent: PropTypes.bool.isRequired,
-            msgSentFunc: PropTypes.func.isRequired
+            msgFunc: PropTypes.func.isRequired
         })
 }
 

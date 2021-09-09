@@ -36,19 +36,28 @@ const SendForm = ({ props: { msg, msgFunc } }) => {
     }));
     const classes = useStyles();
     const dispatch = useDispatch();
-    const { chats, users } = useSelector((state) => state.conversation);
+    const { chats, currentChat } = useSelector((state) => state.conversation);
 
     //Send message
     function CompSendMsg(msg, msgFunc) {
         if (!!msg === true) {
-            dispatch(chatAddMsg({ id: 0, msg: msg, authorId: 1, time: `${moment().format('H:mm:ss')}` }));
+            dispatch(chatAddMsg({
+                chatId: currentChat.id,
+                msg: {
+                    authorId: 1,
+                    msg: msg,
+                    read: false,
+                    time: `${moment().format('H:mm:ss')}`
+                }
+            }));
             msgFunc('');
+
             return true;
         }
     };
 
     //Send message by enter
-    function sendMsgByEnter(e) {
+    function sendMsgByEnter(e, msg, msgFunc) {
         if (e.code === "Enter") {
             e.preventDefault();
             CompSendMsg(msg, msgFunc);
@@ -59,12 +68,13 @@ const SendForm = ({ props: { msg, msgFunc } }) => {
         <TextField
             variant="outlined"
             multiline
-            minRows={4}
+            minRows={3}
+            maxRows={3}
             className={classes.sendtext}
             id="txta1"
             value={msg}
             onChange={(e) => msgFunc(e.target.value)}
-            onKeyDown={(e) => { sendMsgByEnter(e) }}
+            onKeyDown={(e) => { sendMsgByEnter(e, msg, msgFunc) }}
         ></TextField >
         <Button className={classes.button}
             variant="contained" color="primary"
@@ -78,8 +88,7 @@ const SendForm = ({ props: { msg, msgFunc } }) => {
 
 SendForm.propTypes = {
     props: PropTypes.shape({
-        msg: PropTypes.string.isRequired,
-        msgSentFunc: PropTypes.func.isRequired
+        msg: PropTypes.string.isRequired
     })
 }
 

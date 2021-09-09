@@ -8,7 +8,6 @@ import msbg from "./msbg.jpg";
 function Conversation() {
 
   const [msg, msgFunc] = useState("");
-  const [msgSent, msgSentFunc] = useState(false);
 
   ;
 
@@ -16,7 +15,7 @@ function Conversation() {
     topBar: {
       backgroundColor: theme.palette.primary.main,
       width: '100%',
-      height: '60px',
+      height: '64px',
       boxShadow: 'inset 2px 2px 7px -1px #000000'
     },
     conversation: {
@@ -25,10 +24,6 @@ function Conversation() {
       backgroundSize: 'cover',
       width: 'calc(100vw - 325px)',
       height: 'calc(100vh - 60px)',
-      // display: 'flex',
-      // flexDirection: 'column',
-      // justifyContent: 'space-evenly',
-      // alignItems: 'center',
       display: 'grid',
       gridTemplateColumns: '1fr 10fr 10fr 10fr',
       gridTemplateRows: '1fr 20fr 1fr',
@@ -68,8 +63,8 @@ function Conversation() {
       <div className={classes.conversation}>
         {/* I really dont like and idea of spamming list of props like 'dummy=dummy', so I've done it this way */}
         <div className={classes.chatWrapper}>
-          <Chat props={{ msgFunc, msgSent, msgSentFunc }} />
-          <SendForm props={{ msg, msgFunc, msgSentFunc }} />
+          <Chat props={{ msgFunc }} />
+          <SendForm props={{ msg, msgFunc }} />
         </div>
       </div>
     </main>

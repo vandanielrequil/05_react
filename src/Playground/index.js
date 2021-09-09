@@ -1,8 +1,6 @@
 // import { useContext, useState } from 'react';
 // import { MyContext } from '../';
-import { useSelector, useDispatch } from 'react-redux';
-import Button from '@material-ui/core/Button';
-import { incWithoutMessage } from '../Conversation/conversationSlice';
+import { useSelector } from 'react-redux';
 
 
 
@@ -20,8 +18,7 @@ const Playground = (props) => {
     //setInterval(timeOn, 1000);
 
     const { countOfMessages, lastMessageText //, msgArray
-     } = useSelector(state => state.conversation);
-    const dispatch = useDispatch();
+    } = useSelector(state => state.conversation);
 
 
 
@@ -30,7 +27,7 @@ const Playground = (props) => {
         <div> countOfMessages {countOfMessages}; </div>
         <div> lastMessageText {lastMessageText}; </div>
         <br />
-        <Button variant="contained" color="primary" onClick={() => { dispatch(incWithoutMessage()); }}>Add +1</Button></>
+    </>
 }
 
 // const authHOC = function (Component) {
