@@ -55,28 +55,21 @@ const Chat = ({ props: { msgFunc } }) => {
     const classes = useStyles();
     const dispatch = useDispatch();
     const { users, chats, currentChat } = useSelector(state => state.conversation);
+    const curChat = chats.find(e => e.id === currentChat.id);
 
     //Bot answers
     useEffect(() => {
         (function sendAns() {
-            const curChatEl = chats.find(e => e.id === currentChat.id);
-            const msgArray = chats.find(e => e.id === currentChat.id).msgArray;
+            const msgArray = curChat.msgArray;
+            const { answers } = users.find(e => e.id === curChat.chatBuddyId);
             if (msgArray[msgArray.length - 1].read === false) {
                 msgFunc('');
-                const ansArr = [
-                    "Ведите, капитан.",
-                    "Сейчас не время!",
-                    "Странно.",
-                    "Так уже лучше.",
-                    " Э...эй? Кто-нибудь может мне помочь, пожалуйста?",
-                    "Ладно уж, храни свои секреты)))",
-                ];
                 let timer;
                 function answerMsg() {
-                    let ansNum = parseInt(Math.random() * ansArr.length);
+                    let ansNum = parseInt(Math.random() * answers.length);
                     dispatch(chatAddMsg({
                         chatId: currentChat.id,
-                        msg: { authorId: curChatEl.chatBuddyId, msg: ansArr[ansNum], read: true, time: `${moment().format('H:mm:ss')}` },
+                        msg: { authorId: curChat.chatBuddyId, msg: answers[ansNum], read: true, time: `${moment().format('H:mm:ss')}` },
                     }
                     ));
                     return clearInterval(timer);
@@ -84,11 +77,9 @@ const Chat = ({ props: { msgFunc } }) => {
                 timer = setInterval(() => answerMsg(), 1000);
             }
         })();
-    }, [msgFunc, dispatch, chats, currentChat]);
+    }, [msgFunc, dispatch, currentChat, curChat, users]);
 
     //adding left or right style to messages and nickname
-
-    const curChat = chats.find(e => e.id === currentChat.id);
     let ans = curChat.msgArray.map((e, i) => {
         let classWrapper, classChoose, nickname, avatarUrl;
         if (e.authorId !== 1) {
@@ -105,8 +96,8 @@ const Chat = ({ props: { msgFunc } }) => {
             classChoose = classes.send;
             classWrapper = classes.wrapeprSend;
         };
-        return <div className={classWrapper}><Avatar src={avatarUrl} alt="chat buddy photo" />
-            <div key={1000 + i} className={classChoose}><i>{nickname}</i> {e.msg}</div>
+        return <div key={i} className={classWrapper}><Avatar src={avatarUrl} alt="chat buddy photo" />
+            <div className={classChoose}><i>{nickname}</i> {e.msg}</div>
         </div>
     });
 

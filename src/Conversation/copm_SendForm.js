@@ -36,7 +36,7 @@ const SendForm = ({ props: { msg, msgFunc } }) => {
     }));
     const classes = useStyles();
     const dispatch = useDispatch();
-    const { chats, currentChat } = useSelector((state) => state.conversation);
+    const { currentChat } = useSelector((state) => state.conversation);
 
     //Send message
     function CompSendMsg(msg, msgFunc) {

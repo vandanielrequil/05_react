@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { alpha, makeStyles } from '@material-ui/core/styles';
 import { Typography } from '@material-ui/core';
 import AppBar from '@material-ui/core/AppBar';
@@ -24,16 +24,20 @@ const useStyles = makeStyles((theme) => ({
     },
     navChat: {
         margin: '1px 0',
+        padding: '10px 10px',
         display: 'flex',
-        justifyContent: 'space-between',
-        padding: '10px',
-        backgroundColor: theme.palette.primary.light,
+        justifyContent: 'flex-start',
+        backgroundColor: theme.palette.secondary.main,
         '&:hover': { backgroundColor: theme.palette.secondary.light },
     },
+    currentChat: {
+        backgroundColor: theme.palette.primary.light,
+    },
     navChatColumn: {
+        margin: '0 10px',
         display: 'flex',
         flexDirection: 'column',
-        //border: '3px solid Teal'
+        width: '180px',
     },
     grow: {
         flexGrow: 1,
@@ -70,13 +74,19 @@ const useStyles = makeStyles((theme) => ({
         paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
         transition: theme.transitions.create('width'),
         width: '100%',
+    },
+    lastMsg: {
+        overflow: 'hidden',
+        whiteSpace: 'nowrap',
+        width: '200px',
+        textOverflow: 'ellipsis',
     }
 }));
 
 const LeftContainer = () => {
     const dispatch = useDispatch();
     const classes = useStyles();
-    const { currentChat, users, chats } = useSelector((store) => store.conversation);
+    const { users, chats, currentChat } = useSelector((store) => store.conversation);
 
 
     function setCurrentChat(e) {
@@ -85,16 +95,18 @@ const LeftContainer = () => {
 
     function renderChat() {
         const chatList = chats.map(e => {
-            const { name, avatar } = users.find(el => parseInt(el.id) === parseInt(e.chatBuddyId));
+            const { avatar } = users.find(el => el.id === e.chatBuddyId);
             const arrLngt = e.msgArray.length;
-            const { msg, time } = e.msgArray[arrLngt - 1];
-            return <>
-                <div key={e.id} id={e.id} className={classes.navChat} onClick={(e) => { setCurrentChat(e); }}>
+            const { authorId, msg, time } = e.msgArray[arrLngt - 1];
+            const { name } = users.find(el => el.id === authorId);
+            const isCurrent = (currentChat.id === e.id) ? classes.currentChat : '';
+            return <div key={e.id} >
+                <div id={e.id} className={`${classes.navChat} ${isCurrent}`} onClick={(e) => { setCurrentChat(e); }}>
                     <Avatar alt="avatar" src={avatar} />
-                    <div className={classes.navChatColumn}><div>{name}</div><div>{msg}</div></div>
+                    <div className={classes.navChatColumn}><div><i>{name}</i></div><div className={classes.lastMsg}>{msg}</div></div>
                     <div><Typography variant='subtitle2'>{time}</Typography></div>
                 </div>
-            </>
+            </div>
         }
         );
         return chatList;

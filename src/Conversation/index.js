@@ -19,11 +19,12 @@ function Conversation() {
       boxShadow: 'inset 2px 2px 7px -1px #000000'
     },
     conversation: {
+      boxSizing: 'border-box',
       marginLeft: '325px',
       backgroundImage: `url(${msbg})`,
       backgroundSize: 'cover',
       width: 'calc(100vw - 325px)',
-      height: 'calc(100vh - 60px)',
+      height: 'calc(100vh - 64px)',
       display: 'grid',
       gridTemplateColumns: '1fr 10fr 10fr 10fr',
       gridTemplateRows: '1fr 20fr 1fr',
