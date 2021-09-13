@@ -1,9 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import PropTypes from "prop-types";
 import { makeStyles } from '@material-ui/core/styles';
-import { useSelector, useDispatch } from 'react-redux';
-import { chatAddMsg } from '../Conversation/conversationSlice';
-import moment from 'moment';
+import { useSelector } from 'react-redux';
 import Avatar from '@material-ui/core/Avatar';
 
 // This is the area of chat - where messages appear
@@ -53,33 +51,10 @@ const Chat = ({ props: { msgFunc } }) => {
         }
     }));
     const classes = useStyles();
-    const dispatch = useDispatch();
     const { users, chats, currentChat } = useSelector(state => state.conversation);
     const curChat = chats.find(e => e.id === currentChat.id);
 
-    //Bot answers
-    useEffect(() => {
-        (function sendAns() {
-            const msgArray = curChat.msgArray;
-            const { answers } = users.find(e => e.id === curChat.chatBuddyId);
-            if (msgArray[msgArray.length - 1].read === false) {
-                msgFunc('');
-                let timer;
-                function answerMsg() {
-                    let ansNum = parseInt(Math.random() * answers.length);
-                    dispatch(chatAddMsg({
-                        chatId: currentChat.id,
-                        msg: { authorId: curChat.chatBuddyId, msg: answers[ansNum], read: true, time: `${moment().format('H:mm:ss')}` },
-                    }
-                    ));
-                    return clearInterval(timer);
-                }
-                timer = setInterval(() => answerMsg(), 1000);
-            }
-        })();
-    }, [msgFunc, dispatch, currentChat, curChat, users]);
-
-    //adding left or right style to messages and nickname
+    //adding left or right style to messages 
     let ans = curChat.msgArray.map((e, i) => {
         let classWrapper, classChoose, nickname, avatarUrl;
         if (e.authorId !== 1) {

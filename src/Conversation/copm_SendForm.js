@@ -35,13 +35,29 @@ const SendForm = ({ props: { msg, msgFunc } }) => {
         },
     }));
     const classes = useStyles();
-    const dispatch = useDispatch();
+    const dispatchOne = useDispatch();
     const { currentChat } = useSelector((state) => state.conversation);
 
+    // const testDisp = (msg) => (dispatch, getState) => {
+    //     const { conversation } = getState();
+    //     console.log('SUCSESFUL');
+    //     dispatch(chatAddMsg({
+    //         chatId: currentChat.id,
+    //         msg: {
+    //             authorId: 1,
+    //             msg: msg + '====' + conversation.currentChat.id,
+    //             read: false,
+    //             time: `${moment().format('H:mm:ss')}`
+    //         }
+    //     }));
+    //     console.log('SUCSESFUL');
+    // }
+
+
     //Send message
-    function CompSendMsg(msg, msgFunc) {
+    function sendMsg(msg, msgFunc) {
         if (!!msg === true) {
-            dispatch(chatAddMsg({
+            dispatchOne(chatAddMsg({
                 chatId: currentChat.id,
                 msg: {
                     authorId: 1,
@@ -51,16 +67,47 @@ const SendForm = ({ props: { msg, msgFunc } }) => {
                 }
             }));
             msgFunc('');
-
+            console.log('ERTUIT');
+            //dispatchOne(testDisp(msg));
             return true;
         }
     };
 
-    //Send message by enter
+
+
+    const sendMsgByEnterAndBotAnswerThunk = (msg, msgFunc) => (dispatch, getState) => {
+        const { conversation } = getState();
+        const currentChat = conversation.currentChat;
+        const curChat = conversation.chats.find(e => e.id === currentChat.id);
+        const msgArray = curChat.msgArray;
+        sendMsg(msg, msgFunc);
+        msgFunc('');
+        const { answers } = conversation.users.find(e => e.id === curChat.chatBuddyId);
+        if (msgArray[msgArray.length - 1].authorId !== 1) {
+            msgFunc('');
+            let timer;
+            function answerMsg() {
+                let ansNum = parseInt(Math.random() * answers.length);
+                dispatch(chatAddMsg({
+                    chatId: currentChat.id,
+                    msg: { authorId: curChat.chatBuddyId, msg: answers[ansNum], read: true, time: `${moment().format('H:mm:ss')}` },
+                }
+                ));
+                return clearInterval(timer);
+            }
+            timer = setInterval(() => answerMsg(), 1000);
+        }
+    }
+
+    function sendMsgByButton(e, msg, msgFunc) {
+        e.preventDefault();
+        dispatchOne(sendMsgByEnterAndBotAnswerThunk(msg, msgFunc));
+    }
+
     function sendMsgByEnter(e, msg, msgFunc) {
         if (e.code === "Enter") {
             e.preventDefault();
-            CompSendMsg(msg, msgFunc);
+            dispatchOne(sendMsgByEnterAndBotAnswerThunk(msg, msgFunc));
         }
     }
 
@@ -79,7 +126,7 @@ const SendForm = ({ props: { msg, msgFunc } }) => {
         <Button className={classes.button}
             variant="contained" color="primary"
             onClick={(e) => {
-                CompSendMsg(msg, msgFunc);
+                sendMsgByButton(e, msg, msgFunc);
             }}>
             Отправить
         </Button>

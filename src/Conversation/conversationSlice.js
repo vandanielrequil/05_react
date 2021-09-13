@@ -3,9 +3,6 @@ import { createSlice } from "@reduxjs/toolkit";
 export const conversationSlice = createSlice({
     name: 'conversation',
     initialState: {
-        countOfMessages: 0,
-        lastMessageText: 'MessageText',
-        msgArray: [{ msg: 'initMsg', author: 'initAuthor', type: 'initType' }],
         users: [
             { id: 0, name: 'anonymous', avatar: '' },
             { id: 1, name: 'Commander Shepard', avatar: 'https://upload.wikimedia.org/wikipedia/ru/2/20/Commander_Shepard.jpg' },
