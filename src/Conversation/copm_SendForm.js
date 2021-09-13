@@ -38,21 +38,6 @@ const SendForm = ({ props: { msg, msgFunc } }) => {
     const dispatchOne = useDispatch();
     const { currentChat } = useSelector((state) => state.conversation);
 
-    // const testDisp = (msg) => (dispatch, getState) => {
-    //     const { conversation } = getState();
-    //     console.log('SUCSESFUL');
-    //     dispatch(chatAddMsg({
-    //         chatId: currentChat.id,
-    //         msg: {
-    //             authorId: 1,
-    //             msg: msg + '====' + conversation.currentChat.id,
-    //             read: false,
-    //             time: `${moment().format('H:mm:ss')}`
-    //         }
-    //     }));
-    //     console.log('SUCSESFUL');
-    // }
-
 
     //Send message
     function sendMsg(msg, msgFunc) {
