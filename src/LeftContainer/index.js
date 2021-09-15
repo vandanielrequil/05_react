@@ -10,17 +10,21 @@ import SearchIcon from '@material-ui/icons/Search';
 import Avatar from '@material-ui/core/Avatar';
 import { useDispatch, useSelector } from 'react-redux';
 import { chatCurrrentSet } from '../Conversation/conversationSlice'
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
+import { NavLink } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
     wrapper: {
         position: 'absolute',
         width: '325px',
-        height: '100%',
+        height: '92.5%',
         boxShadow: 'rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px',
         backgroundColor: theme.palette.secondary.main
     },
     AppBar: {
-        width: '100%'
+        width: '100%',
+        flexDirection: 'row'
     },
     navChat: {
         margin: '1px 0',
@@ -80,7 +84,21 @@ const useStyles = makeStyles((theme) => ({
         whiteSpace: 'nowrap',
         width: '200px',
         textOverflow: 'ellipsis',
-    }
+    },
+    noTselected: {
+        textDecoration: 'none',
+        color: theme.palette.secondary.dark
+    },
+    selected: {
+        fontSize: '1.2rem',
+        fontWeight: '400',
+        color: theme.palette.primary.main
+    },
+    noStyle: {
+        textDecoration: 'none',
+        color: theme.palette.primary.dark
+    },
+
 }));
 
 const LeftContainer = () => {
@@ -88,6 +106,15 @@ const LeftContainer = () => {
     const classes = useStyles();
     const { users, chats, currentChat } = useSelector((store) => store.conversation);
 
+    const [anchorEl, setAnchorEl] = React.useState(null);
+
+    const handleClick = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
+
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
 
     function setCurrentChat(e) {
         dispatch(chatCurrrentSet(parseInt(e.currentTarget.id)));
@@ -115,35 +142,59 @@ const LeftContainer = () => {
     const chatArray = renderChat();
 
     return (
-        <div className={classes.wrapper}>
-            <AppBar className={classes.AppBar} position="static">
-                <Toolbar variant="regular">
-                    <IconButton
-                        edge="start"
-                        className={classes.menuButton}
-                        color="inherit"
-                        aria-label="open drawer"
-                    >
-                        <MenuIcon />
-                    </IconButton>
-
-                    <div className={classes.search}>
-                        <div className={classes.searchIcon}>
-                            <SearchIcon />
-                        </div>
-                        <InputBase
-                            placeholder="Search…"
-                            classes={{
-                                root: classes.inputRoot,
-                                input: classes.inputInput,
-                            }}
-                            inputProps={{ 'aria-label': 'search' }}
-                        />
+        <div><AppBar className={classes.AppBar} position="static">
+            <Toolbar variant="regular">
+                <IconButton
+                    onClick={handleClick}
+                    edge="start"
+                    className={classes.menuButton}
+                    color="inherit"
+                    aria-label="open drawer"
+                >
+                    <MenuIcon />
+                </IconButton>
+                <Menu
+                    id="simple-menu"
+                    anchorEl={anchorEl}
+                    keepMounted
+                    open={Boolean(anchorEl)}
+                    onClose={handleClose}
+                >
+                    <MenuItem onClick={handleClose}>
+                        <NavLink className={classes.noTselected} activeClassName={classes.selected} to="/profile">Profile
+                        </NavLink>
+                    </MenuItem>
+                    <MenuItem onClick={handleClose}>
+                        <NavLink className={classes.noTselected} activeClassName={classes.selected} to="/conversation">Conversations</NavLink>
+                    </MenuItem>
+                    <MenuItem onClick={handleClose}>
+                        <NavLink className={classes.noTselected} activeClassName={classes.selected} to="/dogs">Dogs API</NavLink>
+                    </MenuItem>
+                    <MenuItem onClick={handleClose}>
+                        <NavLink className={classes.noTselected} activeClassName={classes.selected} to="/playgroud">Playgroud</NavLink>
+                    </MenuItem>
+                </Menu>
+                <div className={classes.search}>
+                    <div className={classes.searchIcon}>
+                        <SearchIcon />
                     </div>
-                </Toolbar>
-            </AppBar>
-            {chatArray}
-        </div >
+                    <InputBase
+                        placeholder="Search…"
+                        classes={{
+                            root: classes.inputRoot,
+                            input: classes.inputInput,
+                        }}
+                        inputProps={{ 'aria-label': 'search' }}
+                    />
+                </div>
+            </Toolbar>
+        </AppBar>
+            <div className={classes.wrapper}>
+
+                <NavLink className={classes.noStyle} to="/conversation">{chatArray}</NavLink>
+
+            </div >
+        </div>
     );
 }
 

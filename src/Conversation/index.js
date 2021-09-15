@@ -19,6 +19,7 @@ function Conversation() {
       boxShadow: 'inset 2px 2px 7px -1px #000000'
     },
     conversation: {
+
       boxSizing: 'border-box',
       marginLeft: '325px',
       backgroundImage: `url(${msbg})`,
@@ -60,7 +61,7 @@ function Conversation() {
   return (
     <main>
 
-      <div className={classes.topBar}></div>
+      {/* <div className={classes.topBar}></div> */}
       <div className={classes.conversation}>
         {/* I really dont like and idea of spamming list of props like 'dummy=dummy', so I've done it this way */}
         <div className={classes.chatWrapper}>
