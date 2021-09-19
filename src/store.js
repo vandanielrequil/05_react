@@ -9,7 +9,7 @@ import dogsReducer from './Dogs/dogsSlice';
 const persistConfig = {
     key: 'root',
     storage,
-    blacklist: ['dogs']
+    blacklist: ['dogs', 'conversation']
 };
 
 const reducers = combineReducers({ conversation: conversationReducer, profile: profileReducer, dogs: dogsReducer });
@@ -20,11 +20,3 @@ export default configureStore({
     middleware: [thunkMiddleware]
 });
 
-
-// export default configureStore({
-//     reducer: {
-//         conversation: conversationReducer,
-//         profile: profileReducer
-//     },
-//     middleware: [thunkMiddleware]
-// });

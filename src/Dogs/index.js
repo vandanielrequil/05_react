@@ -3,7 +3,7 @@ import { makeStyles } from '@material-ui/styles';
 import { Typography } from '@material-ui/core';
 import { DOG_URL, setLoading, setData, setError } from './dogsSlice';
 import { useDispatch } from 'react-redux';
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useCallback } from 'react';
 import { useSelector } from 'react-redux';
 import { CircularProgress } from '@material-ui/core';
 
@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const getDogPhoto = () => async (dispatch, getState) => {
-    const { dogs: { loading, error, data, } } = getState();
+    const { dogs: { loading } } = getState();
     if (!loading) {
         try {
             dispatch(setError(false));
@@ -57,7 +57,6 @@ const Dogs = () => {
         getDogPhotoDispatch()
     }, [getDogPhotoDispatch]);
 
-    console.log(data);
     return <div className={classes.wrapper}>
         <Button color='primary' variant="contained" disabled={loading} onClick={(e) => getDogPhotoDispatch()}> <Typography>Покажи собаку ♡</Typography> </Button>
         <div className={classes.imgBox}>

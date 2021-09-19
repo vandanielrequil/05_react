@@ -161,6 +161,10 @@ const LeftContainer = () => {
                     onClose={handleClose}
                 >
                     <MenuItem onClick={handleClose}>
+                        <NavLink className={classes.noTselected} activeClassName={classes.selected} to="/signin">Login
+                        </NavLink>
+                    </MenuItem>
+                    <MenuItem onClick={handleClose}>
                         <NavLink className={classes.noTselected} activeClassName={classes.selected} to="/profile">Profile
                         </NavLink>
                     </MenuItem>
@@ -172,6 +176,10 @@ const LeftContainer = () => {
                     </MenuItem>
                     <MenuItem onClick={handleClose}>
                         <NavLink className={classes.noTselected} activeClassName={classes.selected} to="/playgroud">Playgroud</NavLink>
+                    </MenuItem>
+
+                    <MenuItem onClick={handleClose}>
+                        <NavLink className={classes.noTselected} activeClassName={classes.selected} to="/firebase">Firebase</NavLink>
                     </MenuItem>
                 </Menu>
                 <div className={classes.search}>
