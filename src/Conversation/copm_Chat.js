@@ -1,11 +1,17 @@
 import React, { useEffect, useRef } from "react";
 import PropTypes from "prop-types";
 import { makeStyles } from '@material-ui/core/styles';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import Avatar from '@material-ui/core/Avatar';
+import { DownloadHistory, UploadHistory } from '../Firebase'
 
 // This is the area of chat - where messages appear
 const Chat = ({ props: { msgFunc } }) => {
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        dispatch(DownloadHistory());
+    }, [dispatch]);
 
     const useStyles = makeStyles((theme) => ({
         chat: {
@@ -50,12 +56,13 @@ const Chat = ({ props: { msgFunc } }) => {
             borderRadius: '5px 5px 5px 5px'
         }
     }));
+
     const classes = useStyles();
     const { users, chats, currentChat } = useSelector(state => state.conversation);
     const curChat = chats.find(e => e.id === currentChat.id);
 
     //adding left or right style to messages 
-    let ans = curChat.msgArray.map((e, i) => {
+    let messagesAraray = curChat.msgArray.map((e, i) => {
         let classWrapper, classChoose, nickname, avatarUrl;
         if (e.authorId !== 1) {
             let { name, avatar } = users.find(e => e.id === curChat.chatBuddyId);
@@ -71,6 +78,7 @@ const Chat = ({ props: { msgFunc } }) => {
             classChoose = classes.send;
             classWrapper = classes.wrapeprSend;
         };
+
         return <div key={i} className={classWrapper}><Avatar src={avatarUrl} alt="chat buddy photo" />
             <div className={classChoose}><i>{nickname}</i> {e.msg}</div>
         </div>
@@ -82,7 +90,8 @@ const Chat = ({ props: { msgFunc } }) => {
         chatElem.current.scrollTop = chatElem.current.scrollHeight;
     });
 
-    return <div ref={chatElem} className={classes.chat}>{ans}</div>
+
+    return <div ref={chatElem} className={classes.chat}>{messagesAraray}</div>
 }
 
 

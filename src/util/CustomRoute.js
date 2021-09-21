@@ -10,7 +10,7 @@ const CustomRoute = ({ secured, children, withAppBar = true, ...rest }) => {
     //     dispatch(initMessageTracking());
     // }, [dispatch]);
 
-    console.log(isAuthenticated);
+    //console.log(isAuthenticated);
 
     if ((secured && isAuthenticated) || !secured) {
         return (

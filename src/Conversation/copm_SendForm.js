@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { chatAddMsg } from '../Conversation/conversationSlice';
 import TextField from '@material-ui/core/TextField';
 import moment from 'moment';
+import { UploadHistory } from '../Firebase'
 
 
 // This is area of send form - button, input etc
@@ -38,7 +39,6 @@ const SendForm = ({ props: { msg, msgFunc } }) => {
     const dispatchOne = useDispatch();
     const { currentChat } = useSelector((state) => state.conversation);
 
-
     //Send message
     function sendMsg(msg, msgFunc) {
         if (!!msg === true) {
@@ -52,13 +52,10 @@ const SendForm = ({ props: { msg, msgFunc } }) => {
                 }
             }));
             msgFunc('');
-            console.log('ERTUIT');
             //dispatchOne(testDisp(msg));
             return true;
         }
     };
-
-
 
     const sendMsgByEnterAndBotAnswerThunk = (msg, msgFunc) => (dispatch, getState) => {
         const { conversation } = getState();
@@ -78,10 +75,12 @@ const SendForm = ({ props: { msg, msgFunc } }) => {
                     msg: { authorId: curChat.chatBuddyId, msg: answers[ansNum], read: true, time: `${moment().format('H:mm:ss')}` },
                 }
                 ));
+                dispatch(UploadHistory());
                 return clearInterval(timer);
             }
             timer = setInterval(() => answerMsg(), 1000);
         }
+        //
     }
 
     function sendMsgByButton(e, msg, msgFunc) {

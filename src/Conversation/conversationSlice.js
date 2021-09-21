@@ -44,11 +44,19 @@ export const conversationSlice = createSlice({
             state.chats.find(e => e.id === action.payload.chatId).msgArray.push(action.payload.msg);
 
         },
-        chatCurrrentSet: (state, action) => { state.currentChat.id = parseInt(action.payload) }
+        chatCurrrentSet: (state, action) => { state.currentChat.id = parseInt(action.payload) },
+        updateSlice: (state, action) => {
+            if (!action.payload) { return false }
+            else {
+                state.users = action.payload.users;
+                state.chats = action.payload.chats;
+                state.currentChat = action.payload.currentChat;
+            }
+        }
     }
 })
 
-export const { chatAddMsg, chatCurrrentSet } = conversationSlice.actions;
+export const { chatAddMsg, chatCurrrentSet, updateSlice } = conversationSlice.actions;
 
 export default conversationSlice.reducer;
 

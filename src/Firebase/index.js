@@ -3,7 +3,9 @@ import { initializeApp } from "firebase/app";
 // Firestore - collection
 import { getFirestore, collection, addDoc, getDocs } from 'firebase/firestore';
 //Realtime database
-import { getDatabase, ref, set } from "firebase/database";
+import { getDatabase, ref, set, onValue } from "firebase/database";
+import { useDispatch, useSelector } from 'react-redux';
+import { updateSlice } from '../Conversation/conversationSlice';
 
 const useStyles = makeStyles((theme) => ({
     wrapper: {
@@ -54,10 +56,11 @@ function testRTDatabase(userId, name, email, imageUrl) {
         profile_picture: imageUrl
     });
 }
-testRTDatabase(1, 'TestName', 'asd@masd.er', 'wwww');
+//testRTDatabase(1, 'TestName', 'asd@masd.er', 'wwww');
 
 const FbApp = () => {
     const classes = useStyles();
+
     return (
         <div className={classes.wrapper}>
             <h1>React & Firebase</h1>
@@ -69,6 +72,31 @@ const FbApp = () => {
 }
 
 export default FbApp;
+
+export const UploadHistory = () => (dispatch, getState) => {
+    //const entity_list = useSelector(store => store.conversation);
+    const { conversation: entity_list } = getState();
+    const db = getDatabase();
+    set(ref(db, 'stage/'), {
+        conversations: { entity_list },
+    });
+    console.log('UploadHistory');
+    return (true);
+}
+
+export const DownloadHistory = () => (dispatch) => {
+    //const dispatch = useDispatch();
+    const db = getDatabase();
+    const currentHistory = ref(db, 'stage/');
+    const convSlice = onValue(currentHistory, (snapshot) => {
+        const { conversations: { entity_list } } = snapshot.val();
+        dispatch(updateSlice(entity_list));
+        return true;
+    });
+    return true;
+}
+
+
 
 
 
