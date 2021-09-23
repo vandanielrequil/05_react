@@ -11,11 +11,12 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 import { useDispatch, useSelector } from 'react-redux';
-import { changeAuth } from '../Profile/profileSlice';
+import reducer, { changeAuth } from '../Profile/profileSlice';
 import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword } from "firebase/auth";
 //import { firebaseApp } from '../Firebase';
 
 export default function SignIn() {
+    console.log(reducer(undefined, {}));
     const [registered, registeredSet] = useState(true);
     const [email, emailSet] = useState('');
     const [password, passwordSet] = useState('');
